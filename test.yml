@@ -1,0 +1,15 @@
+---
+- name: mybook
+  hosts: server
+  become: true
+  remote_user: ubuntu
+
+  tasks:
+    - name: httpd install
+      apt: name=apache2 update_cache=yes state=latest
+    - name: Enable Apache on system reboot
+      service: name=apache2 enabled=yes
+      notify: restart apache
+  handlers:
+    - name: restart apache
+      service: name=apache2 state=restarted
